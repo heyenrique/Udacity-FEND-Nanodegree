@@ -81,10 +81,6 @@ h1 {
     font-size: 33px;
 }
 
-/*
- * Styles for the Score Panel
- */
-
 .score-panel {
     text-align: left;
     width: 345px;
@@ -101,9 +97,68 @@ h1 {
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
+    opacity: 1;
 }
 
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+    font-size: 16px;
+}
+
+.modal-content {
+    margin: 10% 20% 0 20%;
+    width: 60%;
+    background:#FFF;
+}
+
+.modal-heading {
+    display: flex;
+    justify-content: center;
+    font-size: 1.25em;
+    padding: 0 1em;
+    border-bottom: 2px solid #808080;
+}
+
+.game-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1em;
+    border-bottom: 2px solid #808080;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 2em;
+}
+
+.modal-button {
+    width: 20%;
+    height: 20%;
+    padding: 1em;
+    font-size: 1em;
+    font-weight: bold;
+    color: #FFF;
+    background-color: #808080;
+}
+
+.modal-star {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    opacity: 1;
 }
