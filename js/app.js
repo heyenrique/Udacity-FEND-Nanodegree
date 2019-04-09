@@ -1,3 +1,5 @@
+"use strict";
+
 /* ------------------------------------------- REQUIREMENTS -------------------------------------------------------
 1) Create a list that holds all of your cards
 2) Display the cards on the page
@@ -71,11 +73,16 @@ cardDeck.addEventListener('click', function(event1) {
     const event1ObjectTarget = event1.target;
     // check if event oject target can be played by passing the event1ObjectTarget to the checkCardPlay function
     if (checkCardPlay(event1ObjectTarget)) {
+    	// if the card can be played
+    	// check if isTimerActive evaluates to true
         if (isTimerActive) {
+        	// if true
+        	// call the startTimer function
             startTimer();
+            // set the value of the gloval binding isTimerActive to false
             isTimerActive = false;
         }
-        // if the condition is true, run the toggleCard function passing the binding event1ObjectTarget as the argument
+        // then run the toggleCard function passing the binding event1ObjectTarget as the argument
         toggleCard(event1ObjectTarget);
         // run the addToggledCard function passing the binding event1ObjectTarget as the argument
         addToggledCard(event1ObjectTarget);
@@ -83,9 +90,9 @@ cardDeck.addEventListener('click', function(event1) {
         if (toggledCards.length == 2) {
             // if the condition is true, run the checkToggledCardsMatch function passing the binding event1ObjectTarget as the argument
             checkToggledCardsMatch(event1ObjectTarget);
-            // run the addMove function in the local scope
+            // call the addMove function
             addMove();
-            // run the toggleStar function in the local scope
+            // call the checkMoveCount function
             checkMoveCount();
         }
     }
@@ -121,14 +128,14 @@ function shuffle(array) {
 
 // arrow function that has no parameters
 const shuffleCardDeck = () => {
-    // select all of the li elements under the element with the class deck -- returns a nodeList
+    // const binding that is a nodeList containing all of the li elements under the element with the class deck
     const cardsToShuffleNodeList = document.querySelectorAll('.deck li');
-    // convert the NodeList to an array
+    // const binding to convert the NodeList to an array
     const cardsToShuffleArray = Array.from(cardsToShuffleNodeList);
-    // shuffle the cardsToShuffleArray
+    // const binding to shuffle the cardsToShuffleArray
     const shuffledCardsArray = shuffle(cardsToShuffleArray);
     // for each card of the shuffledCardsArray
-    for (card of shuffledCardsArray) {
+    for (let card of shuffledCardsArray) {
         // to the global variable cardDeck append each card
         cardDeck.appendChild(card);
     }
@@ -139,9 +146,10 @@ const startTimer = () => {
     // assign interval to global binding timerId
     timerId = setInterval(() => {
         // for each interval
+        // set setInterval callback function to run after 1s
         //increment the global currentTimer binding
         currentTimer ++;
-        // set setTimeout callback function to run after 1s
+        // call the displayTimer function
         displayTimer();
     }, 1000);
 
@@ -178,19 +186,17 @@ const displayTimer = () => {
     timerSelect.innerHTML = `${hh}:${mm}:${ss}`;
 };
 
-/*
-arrow function that has one parameter, eventObjectTarget, that returns true if the event object target
-
-1) contains the card class
-2) does not contain the match class
-3) the toggledCards array has a length less than 2
-4) the toggledCards array does not include the event object target 
-*/
+// arrow function that has one parameter, eventObjectTarget
 const checkCardPlay = eventObjectTarget => {
+	// that returns true if the event object target
     return (
+    	// contains the card class
         eventObjectTarget.classList.contains('card') &&
+        // does not contain the match class
         !eventObjectTarget.classList.contains('match')
+        // the toggledCards array has a length less than 2
         && toggledCards.length < 2 &&
+        // the toggledCards array does not include the event object target
         !toggledCards.includes(eventObjectTarget)
         );
 };
@@ -199,11 +205,12 @@ const checkCardPlay = eventObjectTarget => {
 const checkToggledCardsMatch = () => {
     // local binding to set maximum card pairs
     const cardPairs = 8;
-    // compare the two items in the toggledCards array
+    // compare the two items in the global binding toggledCards array
     if (toggledCards[0].firstElementChild.classList[1] === toggledCards[1].firstElementChild.classList[1]) {
         // if the condition is true, toggle the match class for each item
         toggledCards[0].classList.toggle('match');
         toggledCards[1].classList.toggle('match');
+        // to each item add Animate.css classes
         toggledCards[0].classList.add('animated', 'heartBeat');
         toggledCards[1].classList.add('animated', 'heartBeat');
         // then empty the toggledCards array
@@ -222,20 +229,29 @@ const checkToggledCardsMatch = () => {
     }
     else {
         // if the condition is not true
+        // to eaach item add the Animate.css classes
         toggledCards[0].classList.add('animated', 'wobble');
         toggledCards[1].classList.add('animated', 'wobble');
+        // to eaach item set the background color to red
         toggledCards[0].style.backgroundColor = 'red';
         toggledCards[1].style.backgroundColor = 'red';
      
         // set setTimeout callback function to run after 1s
         setTimeout(() => { 
             // run the toggleCard function for each item in the toggleCards array
+
+            // to each item
+            // remove the previously added Animate.css classes
             toggledCards[0].classList.remove('animated', 'wobble');
-            toggledCards[1].classList.remove('animated', 'wobble');
+            // call the toggleCard function
             toggleCard(toggledCards[0]);
+            // set the background color to empty
             toggledCards[0].style.backgroundColor = '';
+
+            toggledCards[1].classList.remove('animated', 'wobble');
             toggleCard(toggledCards[1]);
-            toggledCards[1].style.backgroundColor = '';    
+            toggledCards[1].style.backgroundColor = '';  
+
             // then empty the toggleCards array
             toggledCards = [];
         }, 1000);
@@ -246,7 +262,7 @@ const checkToggledCardsMatch = () => {
 const addMove = () => {
     // increments global moveCount binding
     moveCount ++;
-    // local binding that selects the element with class moves that is within an element with class score-panel
+    // local binding that selects the element with class moves that is within an element with the class score-panel
     const moveInnerHTML = document.querySelector('.score-panel .moves');
     // select innerHtml of selected element and set it's value to the value at the global moveCount binding
     moveInnerHTML.innerHTML = moveCount;
@@ -266,7 +282,7 @@ const toggleStar = () => {
     // local binding that selects all of the li elements under the element with the class 'deck'
     const starsNodeList = document.querySelectorAll('.stars li');
     // for each item in starsNodeList
-    for (star of starsNodeList) {
+    for (let star of starsNodeList) {
         // check if opacity is not set to .10
         if (star.style.opacity != .10) {
             // if true
@@ -325,7 +341,7 @@ const gameStatsToModal = () => {
 
     // local binding to select element with 'modal-stars' class that is within the element with the 'game-stats' class
     const modalStars = document.querySelector('.game-stats .modal-stars');
-
+    // local binding to select element with 'stars' class that is within the element with the 'score-panel' class
     const gameStars = document.querySelector('.score-panel .stars');
     // set modalStars innerHTML to the innerHTML at local binding gameStars
     modalStars.innerHTML = gameStars.innerHTML;
@@ -343,6 +359,8 @@ const gameStatsToModal = () => {
     resetCardDeck();
     // call shuffleCardDeck function
     shuffleCardDeck();
+    // set global binding toggledCards to an empty array
+    toggledCards = [];
  };
 
 // arrow function that has no parameters
@@ -371,7 +389,7 @@ const gameStatsToModal = () => {
     // local binding that selects all of the li elements under the element with the class 'deck'
     const starsNodeList = document.querySelectorAll('.stars li');
     // for each item in starsNodeList
-    for (star of starsNodeList) {
+    for (let star of starsNodeList) {
         // set style opacity to 1
         star.style.opacity = 1;
     }
@@ -402,7 +420,7 @@ const gameStatsToModal = () => {
     // local binding that selects all of the li elements under the element with the class 'deck'
     const starsNodeList = document.querySelectorAll('.deck li');
     // for each item of starsNodeList
-    for (card of starsNodeList) {
+    for (let card of starsNodeList) {
         // set the element className property to have only 'card'
         card.className = 'card';
     }
